@@ -15,7 +15,7 @@ DARK_GREY = (80, 78, 81)
 
 class Planet:
 
-    AU = 149.6e6 * 1000 #astrenomical units (earth to sun)
+    AU = 149.6e6 * 1000 #astronomical units (earth to sun)
     G = 6.67428e-11
     SCALE = 200 / AU # 1AU = 100 pixels
     TIME_STEP = 3600 * 24 # 1 day
@@ -39,7 +39,22 @@ class Planet:
         y = self.y * self.SCALE + HEIGHT / 2
 
         pygame.draw.circle(window, self.color, (x,y), self.radius)
+    
+    def attraction(self, other):
+        other_x, other_y = other.x, other.y
+        distance_x = other_x - self.x
+        distance_y = other_y - self.y
+        distance = math.sqrt(distance_x ** 2 + distance_y**2)  # distance between planet self and planet other
 
+        if other.sun:
+            self.distance_to_sun = distance
+
+        force = self.G * self.mass * other.mass / distance**2  #Force between bodies(F)
+        angle = math.atan2(distance_y, distance_x) 
+        force_x = math.cos(angle) * force 
+        force_y = math.sin(angle) * force 
+
+        return force_x, force_y
 
 def main():
     run = True
