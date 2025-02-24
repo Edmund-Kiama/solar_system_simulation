@@ -12,6 +12,8 @@ YELLOW = (255, 255, 0)
 BLUE = (100, 149, 237)
 RED = (188, 39, 50)
 DARK_GREY = (80, 78, 81)
+ORANGE = (235, 243, 246)
+
 
 FONT = pygame.font.SysFont("comicsans", 16)
 
@@ -19,15 +21,17 @@ class Planet:
 
     AU = 149.6e6 * 1000 #astronomical units (earth to sun)
     G = 6.67428e-11
-    SCALE = 200 / AU # 1AU = 100 pixels
+    SCALE = 250 / AU # 1AU = 100 pixels
     TIME_STEP = 3600 * 24 # 1 day
 
-    def __init__(self, x, y, radius, color, mass):
+    # add own G, 
+    def __init__(self, x, y, radius, color, mass, name):
         self.x = x
         self.y = y
         self.radius = radius
         self.color = color
         self.mass = mass
+        self.name = name
 
         self.orbit = []
         self.sun = False
@@ -54,8 +58,8 @@ class Planet:
         pygame.draw.circle(window, self.color, (x,y), self.radius)
 
         if not self.sun:
-            distance_txt = FONT.render(f"{round(self.distance_to_sun/1000, 1)}km", 1, WHITE)
-            window.blit(distance_txt, (x - distance_txt.get_width()/2, y - distance_txt.get_width()/3)  )
+            distance_txt = FONT.render(f"{self.name}", 1, WHITE)
+            window.blit(distance_txt, (x - distance_txt.get_width()/2, y - distance_txt.get_width()/1.5)  )
     
     def attraction(self, other):
         other_x, other_y = other.x, other.y
@@ -101,21 +105,33 @@ def main():
     run = True
     clock = pygame.time.Clock()
     FPS = 60
+    SCALE = 1
 
-    sun = Planet(0, 0, 30, YELLOW, 1.98892 * 10**30 )
+    sun = Planet(0, 0, 30/SCALE, YELLOW, 1.98892 * 10**30 ,'sun')
     sun.sun = True
 
-    earth = Planet(-1 * Planet.AU, 0 , 16, BLUE, 5.9742 *10**24)
+    earth = Planet(-1 * Planet.AU, 0 , 16/SCALE, BLUE, 5.9742 *10**24, 'earth')
     earth.y_vel = 29.783 *1000 # m/s
 
-    mars = Planet(-1.524 * Planet.AU, 0 , 12, RED, 0.639 *10**24)
+    mars = Planet(-1.524 * Planet.AU, 0 , 12/SCALE, RED, 0.639 *10**24, 'mars')
     mars.y_vel = 24.077 * 1000
 
-    mercury = Planet(0.387 * Planet.AU, 0 , 8, DARK_GREY, 0.33 *10**24)
+    mercury = Planet(0.387 * Planet.AU, 0 , 8/SCALE, DARK_GREY, 0.33 *10**24, 'mercury')
     mercury.y_vel = -47.4 * 1000
 
-    venus = Planet(0.723 * Planet.AU, 0 , 14, WHITE, 4.8685 * 10**24)
+    venus = Planet(0.723 * Planet.AU, 0 , 14/SCALE, WHITE, 4.8685 * 10**24, 'venus')
     venus.y_vel = -35.02 * 1000
+
+    # jupiter = Planet(5.2 * Planet.AU , 0 , 30/SCALE, ORANGE, 1.898 * 10**27, 'jupiter')
+    # jupiter.y_vel = 13.06 * 1000
+
+    # saturn = Planet(9.5 * Planet.AU , 0 , 15/SCALE, ORANGE, 5.683 * 10**26, 'saturn')
+    # saturn.y_vel = 9.67 * 1000
+
+    # uranus= Planet(19 * Planet.AU , 0 , 6.4/SCALE, ORANGE, 8.681 * 10**25, 'uranus')
+    # uranus.y_vel = 9.67 * 1000
+
+    # x, y, radius, color, mass
 
     planets = [sun, earth, mars ,mercury, venus]
 
