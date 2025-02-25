@@ -22,7 +22,7 @@ class Planet:
     AU = 149.6e6 * 1000 #astronomical units (earth to sun)
     G = 6.67428e-11
     SCALE = 250 / AU # 1AU = 100 pixels
-    TIME_STEP = 3600 * 24 # 1 day
+    TIME_STEP = 3600 * 12 # 12 hour
 
     # add own G, 
     def __init__(self, x, y, radius, color, mass, name):
@@ -39,6 +39,9 @@ class Planet:
 
         self.x_vel = 0
         self.y_vel = 0
+    
+    def __str__(self):
+        return f"{self.name}"
 
     def draw(self, window):
         x = self.x * self.SCALE + WIDTH / 2
@@ -58,7 +61,7 @@ class Planet:
         pygame.draw.circle(window, self.color, (x,y), self.radius)
 
         if not self.sun:
-            distance_txt = FONT.render(f"{self.name}", 1, WHITE)
+            distance_txt = FONT.render(f"{self}", 1, WHITE)
             window.blit(distance_txt, (x - distance_txt.get_width()/2, y - distance_txt.get_width()/1.5)  )
     
     def attraction(self, other):
