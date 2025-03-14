@@ -22,7 +22,7 @@ class Planet:
     AU = 149.6e6 * 1000 #astronomical units (earth to sun)
     G = 6.67428e-11
     SCALE = 250 / AU # 1AU = 100 pixels
-    TIME_STEP = 3600 * 12 # 12 hour
+    TIME_STEP = 3600 * 24 # 12 hour
 
     # add own G, 
     def __init__(self, x, y, radius, color, mass, name):
@@ -56,7 +56,7 @@ class Planet:
                 y = y * self.SCALE + HEIGHT / 2
                 updated_points.append((x, y))
 
-            pygame.draw.lines(window, self.color, False, updated_points, 2)
+            pygame.draw.lines(window, self.color, False, updated_points, 1)
 
         pygame.draw.circle(window, self.color, (x,y), self.radius)
 
